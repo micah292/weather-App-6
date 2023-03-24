@@ -1,0 +1,5 @@
+var city = document.querySelector("#cityoutput")
+var temp = document.querySelector("#temp")
+var wind = document.querySelector("#wind")
+var hummidity = document.querySelector("#hummidity")
+var conditions = document. querySelector(conditions)
