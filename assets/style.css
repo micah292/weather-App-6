@@ -8,12 +8,12 @@
 :root {
   --var1: black;
   --var2: white;
-  --var3: slateGray;
-  --var4: lightGray;
-  --var5: turquoise;
-  --var6: deepSkyBlue;
-  --var7: mintCream;
-  --var8: powderBlue;
+  --var3: #FF8C00;
+  --var4: #B14EC5  ;
+  --var5: purple;
+  --var6: midnightblue;
+  --var7:  lightblue ;
+  --var8: black;
 }
 
 #weather-app-container {
