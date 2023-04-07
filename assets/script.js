@@ -1,14 +1,14 @@
-const APIKey = "ef03fd351f5799cbdc7ebcd2f886b371";
-var pastSearches = [];
-var hasRun = true; 
+const APIKey = "0d200f52ad5e6e94ff9e5b211cd4d196";
+var previousSearches = [];
+var Run = true; 
 //repeats searches
 
-var searchHistoryList = document.getElementById('past-city-searches');
+var searchList = document.getElementById('past-city-searches');
 var weatherheader = document.getElementById('weather-header');
 function SearchRequest ()
 {
     let search = document.getElementById('city-search-bar').value;
-    pastSearches.push(search);
+    previousSearches.push(search);
     console.log(search);
     getApiData(search);
     addToSearchHistory();
@@ -25,41 +25,53 @@ function getApiData(cityName) {
         .then(function (data) {
             console.log(data);
             console.log(data.list[1].main.temp);
-            let headerCityTag = document.createElement('h1');
-            headerCityTag.setAttribute('id', 'city-tag');
-            headerCityTag.innerText = city;
-            weatherheader.prepend(headerCityTag);
-            let headertemp = document.createElement('p');
-            headertemp.setAttribute('id', 'todays-temp');
-            headertemp.innerText = `temperature: ${data.list[1].main.temp}F`;
-            weatherheader.appendChild(headertemp);
-            let headerwind = document.createElement('p');
-            headerwind.setAttribute('id', 'todays-wind-speed');
-            headerwind.innerText = `wind speed is: ${data.list[1].wind.speed}MPH`;
-            weatherheader.appendChild(headerwind);
-            let headerhumidity = document.createElement('p');
-            headerhumidity.innerText = `humidity is: ${data.list[1].main.humidity}%`;
-            headerhumidity.setAttribute('id', 'todays-humidity');
-            weatherheader.appendChild(headerhumidity);
+            let location = document.createElement('h1');
+            location.setAttribute('id', 'city-tag');
+            location.innerText = city;
+
+            weatherheader.prepend(location);
+
+            let temperature = document.createElement('p');
+            temperature.setAttribute('id', 'todays-temp');
+            temperature.innerText = `temperature: ${data.list[1].main.temp}F`;
+            weatherheader.appendChild(temperature);
+
+            let wind = document.createElement('p');
+
+            wind.setAttribute('id', 'todays-wind-speed');
+            wind.innerText = `wind speed is: ${data.list[1].wind.speed}MPH`;
+            weatherheader.appendChild(wind);
+
+            let humidity = document.createElement('p');
+            humidity.innerText = `humidity is: ${data.list[1].main.humidity}%`;
+            humidity.setAttribute('id', 'todays-humidity');
+            weatherheader.appendChild(humidity);
+
             for (let i = 0; i < data.list.length; i+=8)
             {
                 console.log(data.list[i].main.temp);
+
                 let weatherCard = document.createElement('div');
                 weatherCard.setAttribute('id', `day-${[i]}`);
                 weatherCard.classList.add('weather-cards');
                 document.getElementById('dynamic-forecast-cards').appendChild(weatherCard);
+
                 let weatherdate = document.createElement('h1');
                 weatherdate.innerText = data.list[i].dt_txt;
                 weatherCard.appendChild(weatherdate);
-                let weathertemp = document.createElement('p');
-                weathertemp.innerText = `temperature: ${data.list[i].main.temp}F`;
-                weatherCard.appendChild(weathertemp);
-                let weatherwind = document.createElement('p');
-                weatherwind.innerText = `wind speed is: ${data.list[i].wind.speed}MPH`;
-                weatherCard.appendChild(weatherwind);
-                let weatherhumidity = document.createElement('p');
-                weatherhumidity.innerText = `humidity is: ${data.list[i].main.humidity}%`;
+
+                let weathertemperature = document.createElement('p');
+                weathertemperature.innerText = `temperature: ${data.list[i].main.temp}F`;
+                weatherCard.appendChild(weathertemperature);
+
+                let weatherwindVelocity = document.createElement('p');
+                weatherwindVelocity.innerText = `wind speed is: ${data.list[i].wind.speed}MPH`;
+                weatherCard.appendChild(weatherwindVelocity);
+
+                let weatherhumidityPercentage = document.createElement('p');
+                weatherhumidityPercentage.innerText = `humidity is: ${data.list[i].main.humidity}%`;
                 weatherCard.appendChild(weatherhumidity);
+                
             }
             
         })
@@ -69,21 +81,21 @@ function getApiData(cityName) {
 function addToSearchHistory () {
     clearSlate ();
     console.log('hi');
-    console.log(pastSearches.length);
-    pastSearches.forEach(addToList)
+    console.log(previousSearches.length);
+    previousSearches.forEach(addToList)
 }
 
 function addToList (item, index) {
     let listElement = document.createElement('li');
     listElement.innerText=item;
     listElement.setAttribute('id', 'past-search-item');
-    searchHistoryList.appendChild(listElement);
+    searchList.appendChild(listElement);
     listElement.addEventListener('click', repeatSearch(item))
 
 }
 
 function repeatSearch(city) {
-    if (hasRun)
+    if (Run)
     {
         console.log('true')
     }
@@ -93,7 +105,7 @@ function repeatSearch(city) {
 }
 
 function clearSlate () {
-    searchHistoryList.innerHTML='';
+    searchList.innerHTML='';
     let cardsToClear = document.getElementById('dynamic-forecast-cards');
     while (cardsToClear.firstChild) {
         cardsToClear.removeChild(cardsToClear.firstChild);
